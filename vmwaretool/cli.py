@@ -6,6 +6,7 @@ import os
 from oslo_config import cfg
 from oslo_log import log as logging
 import sys
+import urllib3
 
 import vmwaretool
 from vmwaretool import utils
@@ -14,6 +15,9 @@ from vmwaretool import vmware_ops
 CONF = cfg.CONF
 LOG = logging.getLogger(utils.DOMAIN)
 logging.register_options(CONF)
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 
 def custom_startswith(string, incomplete):
@@ -65,7 +69,21 @@ def main(disable_spinner, config_file, loglevel):
     python_logging.captureWarnings(True)
     utils.setup_logging()
 
-    CONF.log_opt_values(LOG, utils.LOG_LEVELS[loglevel])
+    # CONF.log_opt_values(LOG, utils.LOG_LEVELS[loglevel])
+
+    session, _volumeops = vmware_ops.setup_connection()
+
+    cluster_name = CONF.vmware.vmware_cluster_name
+    if cluster_name:
+        clusters = _volumeops.get_cluster_refs(cluster_name).values()
+        LOG.info("CLUSTERS {}".format(clusters))
+        for c in clusters:
+            piss = _volumeops.get_cluster_custom_attributes(c)
+            LOG.info("CUSTOM ATTRIBUTES = {}".format(piss))
+            hosts = _volumeops.get_cluster_hosts(c)
+            LOG.info("hosts = {}".format(hosts))
+
+
 
     return 0
 

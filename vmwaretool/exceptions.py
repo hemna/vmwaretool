@@ -19,49 +19,47 @@ Exception definitions.
 
 from oslo_vmware import exceptions
 
-from cinder.i18n import _
-
 
 class InvalidAdapterTypeException(exceptions.VMwareDriverException):
     """Thrown when the disk adapter type is invalid."""
-    msg_fmt = _("Invalid disk adapter type: %(invalid_type)s.")
+    msg_fmt = ("Invalid disk adapter type: %(invalid_type)s.")
 
 
 class InvalidDiskTypeException(exceptions.VMwareDriverException):
     """Thrown when the disk type is invalid."""
-    msg_fmt = _("Invalid disk type: %(disk_type)s.")
+    msg_fmt = ("Invalid disk type: %(disk_type)s.")
 
 
 class VirtualDiskNotFoundException(exceptions.VMwareDriverException):
     """Thrown when virtual disk is not found."""
-    msg_fmt = _("There is no virtual disk device.")
+    msg_fmt = ("There is no virtual disk device.")
 
 
 class ProfileNotFoundException(exceptions.VMwareDriverException):
     """Thrown when the given storage profile cannot be found."""
-    msg_fmt = _("Storage profile: %(storage_profile)s not found.")
+    msg_fmt = ("Storage profile: %(storage_profile)s not found.")
 
 
 class NoValidDatastoreException(exceptions.VMwareDriverException):
     """Thrown when there are no valid datastores."""
-    msg_fmt = _("There are no valid datastores.")
+    msg_fmt = ("There are no valid datastores.")
 
 
 class ClusterNotFoundException(exceptions.VMwareDriverException):
     """Thrown when the given cluster cannot be found."""
-    msg_fmt = _("Compute cluster: %(cluster)s not found.")
+    msg_fmt = ("Compute cluster: %(cluster)s not found.")
 
 
 class NoValidHostException(exceptions.VMwareDriverException):
     """Thrown when there are no valid ESX hosts."""
-    msg_fmt = _("There are no valid ESX hosts.")
+    msg_fmt = ("There are no valid ESX hosts.")
 
 
 class TemplateNotFoundException(exceptions.VMwareDriverException):
     """Thrown when template cannot be found."""
-    msg_fmt = _("Template cannot be found at path: %(path)s.")
+    msg_fmt = ("Template cannot be found at path: %(path)s.")
 
 
 class SnapshotNotFoundException(exceptions.VMwareDriverException):
     """Thrown when the backend snapshot cannot be found."""
-    msg_fmt = _("Snapshot: %(name)s not found.")
+    msg_fmt = ("Snapshot: %(name)s not found.")

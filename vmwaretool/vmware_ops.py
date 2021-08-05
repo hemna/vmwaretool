@@ -9,6 +9,9 @@ from oslo_vmware import vim_util
 
 from vmwaretool import volumeops
 
+EXTENSION_KEY = 'org.openstack.storage'
+EXTENSION_TYPE = 'volume'
+
 
 vmdk_opts = [
     cfg.StrOpt('vmware_host_ip',
@@ -134,17 +137,17 @@ CONF = cfg.CONF
 CONF.register_opts(vmdk_opts, group='vmware')
 
 
-def _create_session(self):
-    ip = self.configuration.vmware_host_ip
-    port = self.configuration.vmware_host_port
-    username = self.configuration.vmware_host_username
-    password = self.configuration.vmware_host_password
-    api_retry_count = self.configuration.vmware_api_retry_count
-    task_poll_interval = self.configuration.vmware_task_poll_interval
-    wsdl_loc = self.configuration.safe_get('vmware_wsdl_location')
-    ca_file = self.configuration.vmware_ca_file
-    insecure = self.configuration.vmware_insecure
-    pool_size = self.configuration.vmware_connection_pool_size
+def _create_session():
+    ip = CONF.vmware.vmware_host_ip
+    port = CONF.vmware.vmware_host_port
+    username = CONF.vmware.vmware_host_username
+    password = CONF.vmware.vmware_host_password
+    api_retry_count = CONF.vmware.vmware_api_retry_count
+    task_poll_interval = CONF.vmware.vmware_task_poll_interval
+    wsdl_loc = CONF.vmware.get('vmware_wsdl_location', None)
+    ca_file = CONF.vmware.vmware_ca_file
+    insecure = CONF.vmware.vmware_insecure
+    pool_size = CONF.vmware.vmware_connection_pool_size
     session = api.VMwareAPISession(ip,
                                    username,
                                    password,
@@ -157,3 +160,13 @@ def _create_session(self):
                                    pool_size=pool_size,
                                    op_id_prefix='c-vol')
     return session
+
+
+def setup_connection():
+    session = _create_session()
+    max_objects = CONF.vmware.vmware_max_objects_retrieval
+    random_ds = CONF.vmware.vmware_select_random_best_datastore
+    random_ds_range = CONF.vmware.vmware_random_datastore_range
+    _volumeops = volumeops.VMwareVolumeOps(session, max_objects, EXTENSION_KEY, EXTENSION_TYPE)
+
+    return (session, _volumeops)

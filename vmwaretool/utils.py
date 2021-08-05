@@ -50,7 +50,6 @@ def setup_logging():
     #  oslo_log._options.log_opts[0].default
     #
     existing = logging.get_default_log_levels()
-    print("Default log levels {}".format(existing))
 
     extra_log_level_defaults = [
         'haminfo=WARN',
