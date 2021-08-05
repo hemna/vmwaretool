@@ -1,0 +1,8 @@
+click
+click-completion
+oslo.vmware
+oslo.config
+oslo.log
+pbr
+tabulate
+yaspin
